@@ -16,7 +16,6 @@ def detect(im1,im2):
 
 #producing threshold image for finding countours
 	thresh = cv2.threshold((diff*255).astype('uint8'), 0, 255,cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-# 	thresh = cv2.adaptiveThreshold((diff*255).astype('uint8'),255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
 #getting countors
 	cnts=cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 	cnts = imutils.grab_contours(cnts)
