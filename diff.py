@@ -1,9 +1,6 @@
 import cv2
 import numpy as np
-import imutils
 from skimage.measure import compare_ssim as ssim
-from imutils.video import VideoStream
-vs=VideoStream(src=0).start()
 
 def detect(im1,im2):
 	im3=im1.copy()
@@ -11,7 +8,7 @@ def detect(im1,im2):
 	im1=cv2.GaussianBlur(im1, (25, 25), 0)
 	im2=cv2.GaussianBlur(im2, (25, 25), 0)
 #producing diff image
-	_,diff=ssim(cv2.cvtColor(im1, cv2.COLOR_BGR2GRAY),cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY),full=True)
+	diff=ssim(cv2.cvtColor(im1, cv2.COLOR_BGR2GRAY),cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY),full=True)[1]
 # 	cv2.imshow('diff',diff)
 
 #producing threshold image for finding countours
@@ -27,16 +24,15 @@ def detect(im1,im2):
 	cv2.imshow('im2',im4)
 	return cv2.waitKey(1)
 
-
-im1=vs.read()
+camera = cv2.VideoCapture(0)
+im1 = camera.read()[1]
 im2=im1.copy()
 while 1:
-	im2=vs.read()
+	im2= camera.read()[1]
 	k=detect(im1.copy(),im2.copy())
 	if k==ord('1'):
-		im1=vs.read()
+		im1 = camera.read()[1]
 	elif k==27:
-		vs.stop()
 		cv2.destroyAllWindows()
 		break
 		
